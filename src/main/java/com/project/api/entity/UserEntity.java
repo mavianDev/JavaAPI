@@ -3,6 +3,7 @@ package com.project.api.entity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -12,6 +13,12 @@ public class UserEntity {
     private Long id;
     private String username;
     private String password;
+    private boolean active;
+
+    @ElementCollection(targetClass = RolesEntity.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<RolesEntity> roles;
 
     @OneToMany (cascade = CascadeType.ALL, mappedBy = "user")
     private ArrayList<ToDoEntity> todos;
